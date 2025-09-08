@@ -1,5 +1,7 @@
 package game.escape.models;
 
+import game.escape.exceptions.NullResponseException;
+
 public class Enigme {
 	private String titre;
 	private String description;
@@ -18,11 +20,25 @@ public class Enigme {
 		return "L'énigme " + titre + " - " + description + (estResolue ? "🔓 Énigme résolue !" : "❌ Mauvaise réponse");
 	}
 	
-	public boolean resoudre(String tentative) {
-		if(codeSolution.equalsIgnoreCase(tentative)) {
-			estResolue = true;
+	public boolean resoudre(String tentative) throws NullResponseException  {
+		if(tentative==null) {
+			throw new NullResponseException();
 		}
-		return estResolue;
+		return estResolue = codeSolution.equalsIgnoreCase(tentative);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Enigme)) {
+			return false;
+		}
+		Enigme autreEnigme=(Enigme) obj;
+		return (description+"").equals(autreEnigme.description);
+	}
+	
+	@Override
+	public int hashCode() {
+		return (description+"").hashCode();
 	}
 	
 	
