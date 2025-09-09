@@ -33,4 +33,8 @@ public class Salle {
 	public List<Enigme> getEnigmes() {
 		return enigmes;
 	}
+	
+	public boolean estTerminee() {
+		return true;
+	}
 }
