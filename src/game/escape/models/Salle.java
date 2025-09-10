@@ -7,9 +7,10 @@ import game.escape.exceptions.NullResponseException;
 
 public class Salle {
 	private String nom;
-	private List<Enigme> enigmes;
+	protected List<Enigme> enigmes;
 	private int tempsLimite;
 	private boolean estTerminee;
+	private Salle salleSuivante;
 	
 	public Salle(String nom, int tempsLimite) {
 		this.nom = nom;
@@ -17,10 +18,15 @@ public class Salle {
 		this.enigmes=new ArrayList<>();
 	}
 	
-	public void ajouterEnigme(Enigme enigme) {
+	public void initialize() {
+		
+	}
+	
+	public boolean ajouterEnigme(Enigme enigme) {
 		if(!enigmes.contains(enigme)) {
-			enigmes.add(enigme);
+			return enigmes.add(enigme);
 		}
+		return false;
 	}
 	
 	public boolean resoudreEnigme(int index, String reponse) throws NullResponseException {
@@ -30,11 +36,33 @@ public class Salle {
 	return false;
 	}
 	
+	/**
+	 * Retourne la liste des enigmes non résolues
+	 * @return les énigmes non résolues
+	 */
+	public List<Enigme> getEnigmesNonResolues(){
+		List<Enigme> nonResolues=new ArrayList<>();
+		for(Enigme e:enigmes) {
+			if(!e.isResolue()) {
+				nonResolues.add(e);
+			}
+		}
+		return nonResolues;
+	}
+	
 	public List<Enigme> getEnigmes() {
 		return enigmes;
 	}
 	
+	public Salle getSalleSuivante() {
+		return salleSuivante;
+	}
+	
 	public boolean estTerminee() {
-		return true;
+		return getEnigmesNonResolues().isEmpty();
+	}
+	
+	public boolean estSalleDeFin() {
+		return salleSuivante==null;
 	}
 }

@@ -6,5 +6,15 @@ public class SalleOne extends Salle {
 		super(nom, tempsLimite);
 	}
 
+	@Override
+	public boolean estTerminee() {
+		for(Enigme e:enigmes) {
+			if(e.isResolue()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 }
